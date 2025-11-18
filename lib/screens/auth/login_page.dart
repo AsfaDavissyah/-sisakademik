@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sisakademik/screens/admin/admin_page.dart';
+import 'package:sisakademik/screens/guru/guru_page.dart';
+import 'package:sisakademik/screens/siswa/siswa_page.dart';
 import '../../services/auth_controller.dart';
 import '../../models/user_model.dart';
 import 'register_page.dart';
@@ -30,16 +33,25 @@ class _LoginPageState extends State<LoginPage> {
 
       // Redirect sesuai role
       if (user.role == "admin") {
-        Navigator.pushReplacementNamed(context, "/admin");
+        Navigator.pushReplacement(
+          context, 
+          MaterialPageRoute(builder: (_) => AdminPage(username: user.username)),
+        );
       } else if (user.role == "guru") {
-        Navigator.pushReplacementNamed(context, "/guru");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => GuruPage(username: user.username)),
+        );
       } else {
-        Navigator.pushReplacementNamed(context, "/siswa");
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => SiswaPage(username: user.username)),
+        );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Login gagal: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Login gagal: $e")));
     }
 
     setState(() => isLoading = false);
@@ -69,8 +81,9 @@ class _LoginPageState extends State<LoginPage> {
             // Tombol Login
             ElevatedButton(
               onPressed: isLoading ? null : handleLogin,
-              child:
-                  isLoading ? const CircularProgressIndicator() : const Text("Login"),
+              child: isLoading
+                  ? const CircularProgressIndicator()
+                  : const Text("Login"),
             ),
 
             const SizedBox(height: 20),
@@ -84,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                 );
               },
               child: const Text("Belum punya akun? Daftar"),
-            )
+            ),
           ],
         ),
       ),

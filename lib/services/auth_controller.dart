@@ -15,7 +15,25 @@ class AuthController {
     required String role,
     required String linkedId,
   }) async {
-    // step 1: register ke auth
+
+    // 1️⃣ VALIDASI INPUT DASAR
+    if (email.isEmpty || password.isEmpty || username.isEmpty) {
+      throw Exception("Email, password, dan username wajib diisi.");
+    }
+
+    // 2️⃣ ROLE VALIDATION (SUPER IMPORTANT)
+    // Admin tidak boleh diregistrasi lewat aplikasi
+    if (role.toLowerCase() == "admin") {
+      throw Exception("Akun admin tidak boleh dibuat melalui aplikasi.");
+    }
+
+    // Role harus "guru" atau "siswa" saja
+    const allowedRoles = ["guru", "siswa"];
+    if (!allowedRoles.contains(role.toLowerCase())) {
+      throw Exception("Role tidak valid. Hanya guru atau siswa yang diperbolehkan.");
+    }
+
+    // 3️⃣ REGISTER KE FIREBASE AUTH
     final user = await authService.registerUser(
       email: email,
       password: password,
@@ -25,19 +43,19 @@ class AuthController {
       throw Exception("Gagal membuat akun.");
     }
 
-    // step 2: simpan data ke Firestore
+    // 4️⃣ SIMPAN DATA KE FIRESTORE
     final userModel = UserModel(
       uid: user.uid,
       name: name,
       username: username,
-      role: role,
+      role: role,     // sudah aman (bukan admin)
       linkedId: linkedId,
     );
 
     await userService.saveUserData(userModel);
   }
 
-    // LOGIN USER + AMBIL ROLE
+  // LOGIN USER + AMBIL ROLE
   Future<UserModel?> loginAccount({
     required String email,
     required String password,
@@ -55,5 +73,4 @@ class AuthController {
     // step 2: ambil data role dari Firestore
     return await userService.getUserByUid(user.uid);
   }
-
 }

@@ -14,22 +14,28 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameC = TextEditingController();
   final TextEditingController usernameC = TextEditingController();
 
+  // Role default menjadi siswa
   String selectedRole = "siswa";
-  final AuthController authController = AuthController();
 
+  final AuthController authController = AuthController();
   bool isLoading = false;
 
   void handleRegister() async {
     setState(() => isLoading = true);
 
     try {
+      // MENCEGAH PEMILIHAN ROLE ADMIN (HARD SECURITY)
+      if (selectedRole == "admin") {
+        throw "Role admin tidak bisa dibuat melalui registrasi.";
+      }
+
       await authController.registerAccount(
         email: emailC.text.trim(),
         password: passwordC.text.trim(),
         name: nameC.text.trim(),
         username: usernameC.text.trim(),
-        role: selectedRole,
-        linkedId: "", // nanti diisi saat data siswa/guru dibuat
+        role: selectedRole, // hanya 'guru' atau 'siswa'
+        linkedId: "",       // akan diisi nanti saat data dibuat
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -77,14 +83,10 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 20),
 
-            // Dropdown untuk memilih role
+            // Role tanpa ADMIN
             DropdownButtonFormField(
               value: selectedRole,
               items: const [
-                DropdownMenuItem(
-                  value: "admin",
-                  child: Text("Admin"),
-                ),
                 DropdownMenuItem(
                   value: "guru",
                   child: Text("Guru"),
