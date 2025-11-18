@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "979914338894",
+    "project_id": "sisakademik",
+    "storage_bucket": "sisakademik.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:979914338894:android:290bd88b30cd834887891f",
+        "android_client_info": {
+          "package_name": "com.example.sisakademik"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIAUcUtcGpmTE8cdPIUHl-VcRUWQcPUas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
