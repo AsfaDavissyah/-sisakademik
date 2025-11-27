@@ -14,7 +14,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController nameC = TextEditingController();
   final TextEditingController usernameC = TextEditingController();
 
-  // Role default menjadi siswa
+  // Role default = siswa
   String selectedRole = "siswa";
 
   final AuthController authController = AuthController();
@@ -24,18 +24,14 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() => isLoading = true);
 
     try {
-      // MENCEGAH PEMILIHAN ROLE ADMIN (HARD SECURITY)
-      if (selectedRole == "admin") {
-        throw "Role admin tidak bisa dibuat melalui registrasi.";
-      }
-
+      /// ⚠ Admin sekarang TIDAK diblokir lagi
       await authController.registerAccount(
         email: emailC.text.trim(),
         password: passwordC.text.trim(),
         name: nameC.text.trim(),
         username: usernameC.text.trim(),
-        role: selectedRole, // hanya 'guru' atau 'siswa'
-        linkedId: "",       // akan diisi nanti saat data dibuat
+        role: selectedRole, // bisa 'admin', 'guru', atau 'siswa'
+        linkedId: "", // nanti diisi jika ada tabel lain
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -43,11 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
       );
 
       Navigator.pop(context);
-
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Registrasi gagal: $e")),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Registrasi gagal: $e")));
     }
 
     setState(() => isLoading = false);
@@ -83,23 +78,16 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 20),
 
-            // Role tanpa ADMIN
+            /// 🔽 ADMIN DIBUKA LAGI DI SINI
             DropdownButtonFormField(
               value: selectedRole,
               items: const [
-                DropdownMenuItem(
-                  value: "guru",
-                  child: Text("Guru"),
-                ),
-                DropdownMenuItem(
-                  value: "siswa",
-                  child: Text("Siswa"),
-                ),
+                DropdownMenuItem(value: "admin", child: Text("Admin")),
+                DropdownMenuItem(value: "guru", child: Text("Guru")),
+                DropdownMenuItem(value: "siswa", child: Text("Siswa")),
               ],
               onChanged: (value) {
-                setState(() {
-                  selectedRole = value!;
-                });
+                setState(() => selectedRole = value!);
               },
               decoration: const InputDecoration(labelText: "Role"),
             ),

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:sisakademik/screens/guru/input_nilai_page.dart';
+import 'package:sisakademik/screens/siswa/nilai_siswa_page.dart';
+import 'package:sisakademik/screens/siswa/pengumuman_siswa_page.dart';
 import 'firebase_options.dart';
 import 'screens/admin/admin_page.dart';
 import 'screens/guru/guru_page.dart';
 import 'screens/siswa/siswa_page.dart';
+import 'screens/siswa/jadwal_siswa_page.dart';
 
 import 'screens/auth/login_page.dart';
 
@@ -28,6 +32,12 @@ class MyApp extends StatelessWidget {
         "/admin": (context) => AdminPage(username: "admin"),
         "/guru": (context) => GuruPage(username: "guru"),
         "/siswa": (context) => SiswaPage(username: "siswa"),
+        "/jadwalSiswa": (context) => const JadwalSiswaPage(),
+        "/nilaiSiswa": (context) => const NilaiSiswaPage(),
+        "/pengumumanSiswa": (context) => const PengumumanSiswaPage(),
+        "/inputNilai": (context) => const InputNilaiPage(),
+        "/jadwalGuru": (context) => const JadwalSiswaPage(),
+        "/pengumumanGuru": (context) => const PengumumanSiswaPage(),
       },
     );
   }

@@ -14,24 +14,71 @@ class SiswaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Siswa Page")),
-      body: Center(
+      appBar: AppBar(title: const Text("Dashboard Siswa")),
+      body: Padding(
+        padding: const EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Ini page siswa,\nselamat datang $username",
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20),
+              "Halo, $username",
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: () => logout(context),
-              child: const Text("Logout"),
+            const SizedBox(height: 10),
+            const Text("Silakan pilih menu berikut:"),
+            const SizedBox(height: 30),
+
+            /// MENU JADWAL
+            _menuButton(
+              title: "Jadwal",
+              onTap: () {
+                Navigator.pushNamed(context, "/jadwalSiswa");
+              },
+            ),
+
+            /// MENU NILAI
+            _menuButton(
+              title: "Nilai",
+              onTap: () {
+                Navigator.pushNamed(context, "/nilaiSiswa");
+              },
+            ),
+
+            /// MENU PENGUMUMAN
+            _menuButton(
+              title: "Pengumuman",
+              onTap: () {
+                Navigator.pushNamed(context, "/pengumumanSiswa");
+              },
+            ),
+
+            const Spacer(),
+
+            Center(
+              child: ElevatedButton(
+                onPressed: () => logout(context),
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                child: const Text("Logout"),
+              ),
             )
           ],
         ),
       ),
     );
   }
+}
+
+/// 🔹 Widget Tombol Menu
+Widget _menuButton({required String title, required Function() onTap}) {
+  return Container(
+    width: double.infinity,
+    margin: const EdgeInsets.only(bottom: 15),
+    child: ElevatedButton(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+      ),
+      child: Text(title, style: const TextStyle(fontSize: 18)),
+    ),
+  );
 }
