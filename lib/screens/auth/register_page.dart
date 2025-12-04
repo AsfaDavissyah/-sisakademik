@@ -30,15 +30,14 @@ class _RegisterPageState extends State<RegisterPage> {
         password: passwordC.text.trim(),
         name: nameC.text.trim(),
         username: usernameC.text.trim(),
-        role: selectedRole, // bisa 'admin', 'guru', atau 'siswa'
-        linkedId: "", // nanti diisi jika ada tabel lain
+        role: selectedRole,
+        linkedId: "",
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Registrasi berhasil! Silakan login.")),
       );
-
-      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, "/");
     } catch (e) {
       ScaffoldMessenger.of(
         context,

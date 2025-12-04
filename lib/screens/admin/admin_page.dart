@@ -14,21 +14,73 @@ class AdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Admin Page")),
-      body: Center(
+      appBar: AppBar(
+        title: const Text("Dashboard Admin"),
+        centerTitle: true,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "Ini page admin,\nselamat datang $username",
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20),
+              "Selamat datang, $username",
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-            const SizedBox(height: 25),
+            const SizedBox(height: 8),
+            const Text(
+              "Silakan pilih menu di bawah ini:",
+              style: TextStyle(color: Colors.black54),
+            ),
+            const SizedBox(height: 30),
+
+            // Kelola Siswa
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/kelolaSiswa");
+              },
+              child: const Text("Kelola Data Siswa"),
+            ),
+            const SizedBox(height: 12),
+
+            // Kelola Guru
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/kelolaGuru");
+              },
+              child: const Text("Kelola Data Guru"),
+            ),
+            const SizedBox(height: 12),
+
+            // Kelola Jadwal
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/kelolaJadwal");
+              },
+              child: const Text("Kelola Jadwal"),
+            ),
+            const SizedBox(height: 12),
+
+            // Pengumuman
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/pengumumanAdmin");
+              },
+              child: const Text("Kelola Pengumuman"),
+            ),
+
+            const Spacer(),
+
             ElevatedButton(
               onPressed: () => logout(context),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
               child: const Text("Logout"),
-            )
+            ),
           ],
         ),
       ),

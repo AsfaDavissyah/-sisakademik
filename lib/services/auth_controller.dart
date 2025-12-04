@@ -16,24 +16,19 @@ class AuthController {
     required String linkedId,
   }) async {
 
-    // 1️⃣ VALIDASI INPUT DASAR
+    // 1️⃣ Validasi input dasar
     if (email.isEmpty || password.isEmpty || username.isEmpty) {
       throw Exception("Email, password, dan username wajib diisi.");
     }
 
-    // 2️⃣ ROLE VALIDATION (SUPER IMPORTANT)
-    // Admin tidak boleh diregistrasi lewat aplikasi
-    if (role.toLowerCase() == "admin") {
-      throw Exception("Akun admin tidak boleh dibuat melalui aplikasi.");
-    }
-
-    // Role harus "guru" atau "siswa" saja
-    const allowedRoles = ["guru", "siswa"];
+    // 2️⃣ Role validation (ADMIN DIPERBOLEHKAN)
+    // Role yang diizinkan bebas: admin, guru, siswa
+    const allowedRoles = ["admin", "guru", "siswa"];
     if (!allowedRoles.contains(role.toLowerCase())) {
-      throw Exception("Role tidak valid. Hanya guru atau siswa yang diperbolehkan.");
+      throw Exception("Role tidak valid. Pilih admin, guru, atau siswa.");
     }
 
-    // 3️⃣ REGISTER KE FIREBASE AUTH
+    // 3️⃣ REGISTER ke Firebase Auth
     final user = await authService.registerUser(
       email: email,
       password: password,
@@ -48,7 +43,7 @@ class AuthController {
       uid: user.uid,
       name: name,
       username: username,
-      role: role,     // sudah aman (bukan admin)
+      role: role.toLowerCase(), // pastikan lowercase
       linkedId: linkedId,
     );
 
@@ -60,7 +55,8 @@ class AuthController {
     required String email,
     required String password,
   }) async {
-    // step 1: login ke auth
+
+    // 1️⃣ Login ke Auth
     final user = await authService.loginUser(
       email: email,
       password: password,
@@ -70,7 +66,13 @@ class AuthController {
       throw Exception("Login gagal.");
     }
 
-    // step 2: ambil data role dari Firestore
-    return await userService.getUserByUid(user.uid);
+    // 2️⃣ Ambil data user dari Firestore
+    final userData = await userService.getUserByUid(user.uid);
+
+    if (userData == null) {
+      throw Exception("Data user tidak ditemukan di Firestore.");
+    }
+
+    return userData;
   }
 }
